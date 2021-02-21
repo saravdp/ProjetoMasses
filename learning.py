@@ -1,3 +1,5 @@
+import pickle
+
 import sm as sm
 from numpy import nan
 import numpy as np
@@ -152,24 +154,27 @@ log_reg_score = log_reg_cv_score.mean() * 100
 # 7. CLASSIFICATION USING A NEURAL NETWORK
 def create_model():
     model = Sequential()
-    # adicionamos 6 dimensoes
+    #4 feature inputs going into 6 neurons
     model.add(Dense(64, input_dim=4, kernel_initializer='normal', activation='relu'))
+    # Tecnica de regularização para reduzir o overfitting
     model.add(Dropout(0.2))
     model.add(Dense(32, kernel_initializer='normal', activation='relu'))
     model.add(Dropout(0.2))
     model.add(Dense(16, kernel_initializer='normal', activation='relu'))
 
-    # configuramos 1 output
+    # configuramos 1 output layer with a binary classification, for example 1 or 0
     model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
 
-    model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+    # teste com r
+    # model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     # With Overfitting
     # reg_history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=4000, verbose=0)
 
-   #com o early stopping tem piores resultados
+   # com o early stopping tem piores resultados
    # reg_history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100,
-   #                         callbacks=EarlyStopping(monitor='val_loss'), batch_size=10, verbose=2)
+   # callbacks=EarlyStopping(monitor='val_loss'), batch_size=10, verbose=2)
     reg_history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100, batch_size=10, verbose=2)
 
 
@@ -186,6 +191,7 @@ def create_model():
     predictions = model.predict(X_train)
     # round predictions
     rounded = [round(x[0]) for x in predictions]
+    print(classes[np.argmax(rounded)])
     return accuracy * 100
 
 
@@ -193,6 +199,7 @@ def create_model():
 # neural_network = cross_val_score(model_estimator, scaled_features, classes, cv=10)
 # neural_network_score = neural_network.mean() * 100
 neural = create_model()
+
 print("CLASSIFICATION ACCURACY RESULTS:")
 print(f'Decision Trees = {decision_tree_score} %')
 print(f'Random Forest = {random_forest_score} %')
