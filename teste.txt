@@ -1,0 +1,6 @@
+   Idade  redonda  oval  lobular  irregular  circumscribed  microlobulated  obscured  ill-defined  spiculated  Densidade  Gravidade
+0   67.0      0.0   0.0      1.0        0.0            0.0             0.0       0.0          0.0         1.0        3.0        1.0
+1   43.0      1.0   0.0      0.0        0.0            1.0             0.0       0.0          0.0         0.0        3.0        1.0
+2   58.0      0.0   0.0      0.0        1.0            0.0             0.0       0.0          0.0         1.0        3.0        1.0
+3   28.0      1.0   0.0      0.0        0.0            1.0             0.0       0.0          0.0         0.0        3.0        0.0
+4   74.0      1.0   0.0      0.0        0.0            0.0             0.0       0.0          0.0         1.0        3.0        1.0
