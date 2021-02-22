@@ -58,6 +58,14 @@ print(df.head())
 
 # plot = sns.countplot(x='Forma', hue='Gravidade', data=newDf)
 # plot.figure.savefig("Forma_countplot.png")
+# plot = sns.countplot(x='BI-RADS', hue='Gravidade', data=newDf)
+# plot.figure.savefig("BI-RADS_gravidade.png")
+# plot1 = sns.countplot(x='Densidade', data=newDf)
+# plot1.figure.savefig("densidade.png")
+# plot2 = sns.countplot(x='Margem', hue='Gravidade', data=newDf)
+# plot2.figure.savefig("Margem_gravidade.png")
+# plot3 = sns.boxplot(x='Gravidade', y='Idade', data=newDf)
+# plot3.figure.savefig("Gravidade_Idade.png")
 # Drop BI-RADS row because it is not a predictive attribute
 df = df.drop(['BI-RADS'], axis=1)
 

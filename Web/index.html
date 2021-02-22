@@ -25,6 +25,27 @@
 
     <!-- Main CSS-->
     <link href="css/main.css" rel="stylesheet" media="all">
+    <style>
+        .alert {
+            padding: 20px;
+            color: white;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
@@ -106,9 +127,21 @@
                             </div>
                         </div> -->
                         <div class="p-t-30">
-                            <button class="btn btn--radius btn--green" type="submit">Obter previsão</button>
+                            <button style="background-color: #FA4251;" class="btn btn--radius btn--green"
+                                type="submit">Obter previsão</button>
                         </div>
                     </form>
+                    <br><br>
+                    <!-- Resultado Maligno -->
+                    <div class="alert" id="malignant" style="background-color: #f44336; display: none;">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <strong>Maligno!</strong> Deve consultar o seu médico o mais rápido possível.
+                    </div>
+                    <!-- Resultado Benigno -->
+                    <div class="alert" id="benign" style="background-color: #4BB543; display: none;">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <strong>Benigno!</strong> A sua massa é benigna, no entanto deve consultar o seu médico.
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,7 +161,7 @@
             var densidade = document.getElementById('densidade').value
 
             //request
-            fetch("http://127.0.0.1:5000/predict",{
+            fetch("http://127.0.0.1:5000/predict", {
                 method: 'POST',
                 body: JSON.stringify({
                     birads: birads,
@@ -137,16 +170,25 @@
                     margem: margem,
                     densidade: densidade
                 }),
-                headers:{
-                    "Content-Type":"application/json; charset=UTF-8"
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
                 }
             })
-            .then(function(response){
-                return response.json()
-            })
-            .then(function(data){
-                console.log(data)
-            })
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (data) {
+                    console.log(data)
+                    // var prev = JSON.parse(data);
+                    if (data.prediction == "Benigno") {
+                        document.getElementById('malignant').style.display = 'none'; // show
+                        document.getElementById('benign').style.display = 'block'; // hide
+                    }else{
+                        document.getElementById('malignant').style.display = 'block'; // show
+                        document.getElementById('benign').style.display = 'none'; // hide
+                    }
+
+                })
 
 
 
