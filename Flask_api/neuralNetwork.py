@@ -8,9 +8,7 @@ from sklearn.naive_bayes import GaussianNB
 from tensorflow.python.keras import Sequential
 from tensorflow.python.keras.layers import Dense, Dropout
 from dateutil.relativedelta import relativedelta
-
-# y_pred = My_Model.predict(X_test)
-
+import learning
 
 df = pd.read_csv('mammographic_masses.data.txt',
                  names=['BI-RADS', 'Idade', 'Forma', 'Margem', 'Densidade', 'Gravidade'])
@@ -34,25 +32,15 @@ normaliser = preprocessing.StandardScaler()
 scaled_features = normaliser.fit_transform(features)
 # Splitting the train and test data
 X_train, X_test, y_train, y_test = train_test_split(scaled_features, classes, test_size=0.30, random_state=1)
-model = Sequential()
-model.add(Dense(64, input_dim=4, kernel_initializer='normal', activation='relu'))
-model.add(Dropout(0.2))
-model.add(Dense(32, kernel_initializer='normal', activation='relu'))
-model.add(Dropout(0.2))
-model.add(Dense(16, kernel_initializer='normal', activation='relu'))
-model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
-model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100, batch_size=10, verbose=2)
 
-My_Model = model
-My_Model.fit(X_train,y_train.ravel())
+
+My_Model = learning.create_model()
+My_Model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=100, batch_size=10, verbose=2)
 y_pred = My_Model.predict(X_test)
 
 
-
-
 def prediction(birads, date, shape, margin, density):
-    # Output of the model which predicts whether its benign and malignant
+    # Output do modelo que prediz se é benigno e maligno
     age = getAge(date)
     features_new = [[age, shape, margin, density]]
     normalized = preprocessing.StandardScaler()
@@ -67,7 +55,7 @@ def prediction(birads, date, shape, margin, density):
             return 'Maligno'
 
 
-
+# Função para converter a data de nascimento para a idade
 def getAge(birth):
     today = date.today()
 
